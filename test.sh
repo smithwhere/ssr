@@ -12,61 +12,33 @@ export tmpDIST=''
 export tmpURL=''
 export tmpWORD=''
 export tmpMirror=''
-export tmpDHCP=''
-export targetRelese=''
-export targetLang='cn'
-export TimeZone=''
-export setIpStack=''
 export ipAddr=''
 export ipMask=''
 export ipGate=''
-export ipDNS='8.8.8.8 1.1.1.1'
-export ip6Addr=''
-export ip6Mask=''
-export ip6Gate=''
-export ip6DNS='2001:4860:4860::8888 2606:4700:4700::1111'
-export IncDisk=''
+export ipDNS='8.8.8.8'
+export IncDisk='default'
 export interface=''
 export interfaceSelect=''
-export setInterfaceName='0'
-export autoPlugAdapter='1'
-export IsCN=''
 export Relese=''
-export sshPORT=''
+export sshPORT='22'
 export ddMode='0'
 export setNet='0'
-export setNetbootXyz='0'
 export setRDP='0'
-export tmpSetIPv6=''
-export setIPv6='1'
-export setRaid=''
-export setDisk=''
-export partitionTable='mbr'
-export setMemCheck='1'
-export setCloudKernel=''
+export setIPv6='0'
 export isMirror='0'
 export FindDists='0'
-export setFileType=''
 export loaderMode='0'
-export setMotd=''
-export setDns=''
-export LANG="en_US.UTF-8"
-export LANGUAGE="en_US:en"
 export IncFirmware='0'
 export SpikCheckDIST='0'
+export setInterfaceName='0'
 export UNKNOWHW='0'
 export UNVER='6.4'
 export GRUBDIR=''
 export GRUBFILE=''
 export GRUBVER=''
 export VER=''
-export setCMD=""
+export setCMD=''
 export setConsole=''
-export setFail2ban=''
-export setAutoConfig='1'
-export FirmwareImage=''
-export AddNum='1'
-export DebianModifiedProcession=''
 
 
 while [[ $# -ge 1 ]]; do
@@ -107,7 +79,7 @@ while [[ $# -ge 1 ]]; do
       ;;
     -i|--interface)
       shift
-      interface="$1"
+      interfaceSelect="$1"
       shift
       ;;
     --ip-addr)
@@ -125,6 +97,11 @@ while [[ $# -ge 1 ]]; do
       ipGate="$1"
       shift
       ;;
+    --ip-dns)
+      shift
+      ipDNS="$1"
+      shift
+      ;;
     --dev-net)
       shift
       setInterfaceName='1'
@@ -132,19 +109,6 @@ while [[ $# -ge 1 ]]; do
     --loader)
       shift
       loaderMode='1'
-      ;;
-    --prefer)
-      shift
-      tmpPrefer="$1"
-      shift
-      ;;
-    -a|--auto)
-      shift
-      tmpINS='auto'
-      ;;
-    -m|--manual)
-      shift
-      tmpINS='manual'
       ;;
     -apt|-yum|--mirror)
       shift
@@ -158,22 +122,35 @@ while [[ $# -ge 1 ]]; do
       WinRemote="$1"
       shift
       ;;
-    -ssl)
+    -cmd)
       shift
-      tmpSSL="$1"
+      setCMD="$1"
+      shift
+      ;;
+    -console)
+      shift
+      setConsole="$1"
       shift
       ;;
     -firmware)
       shift
       IncFirmware="1"
       ;;
-    --ipv6)
+    -port)
+      shift
+      sshPORT="$1"
+      shift
+      ;;
+    --noipv6)
       shift
       setIPv6='1'
       ;;
+    -a|--auto|-m|--manual|-ssl)
+      shift
+      ;;
     *)
       if [[ "$1" != 'error' ]]; then echo -ne "\nInvaild option: '$1'\n\n"; fi
-      echo -ne " Usage:\n\tbash $(basename $0)\t-d/--debian [\033[33m\033[04mdists-name\033[0m]\n\t\t\t\t-u/--ubuntu [\033[04mdists-name\033[0m]\n\t\t\t\t-c/--centos [\033[33m\033[04mdists-verison\033[0m]\n\t\t\t\t-v/--ver [32/\033[33m\033[04mi386\033[0m|64/amd64]\n\t\t\t\t--ip-addr/--ip-gate/--ip-mask\n\t\t\t\t-apt/-yum/--mirror\n\t\t\t\t-dd/--image\n\t\t\t\t-a/--auto\n\t\t\t\t-m/--manual\n"
+      echo -ne " Usage:\n\tbash $(basename $0)\t-d/--debian [\033[33m\033[04mdists-name\033[0m]\n\t\t\t\t-u/--ubuntu [\033[04mdists-name\033[0m]\n\t\t\t\t-c/--centos [\033[04mdists-name\033[0m]\n\t\t\t\t-v/--ver [32/i386|64/\033[33m\033[04mamd64\033[0m] [\033[33m\033[04mdists-verison\033[0m]\n\t\t\t\t--ip-addr/--ip-gate/--ip-mask\n\t\t\t\t-apt/-yum/--mirror\n\t\t\t\t-dd/--image\n\t\t\t\t-p [linux password]\n\t\t\t\t-port [linux ssh port]\n"
       exit 1;
       ;;
     esac
